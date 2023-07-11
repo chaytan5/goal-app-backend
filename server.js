@@ -11,8 +11,36 @@ const app = express();
 
 connectDB();
 
+let whitelist = [
+	"http://localhost:7000",
+	"https://goal-setter-app-bay.vercel.app/",
+];
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			if (whitelist.indexOf(origin) !== -1 || origin === undefined) {
+				callback(null, true);
+			} else {
+				console.log(origin);
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		methods: "GET,POST,PUT,DELETE",
+		withCredentials: true,
+	})
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.get("/", (req, res) => {
+	try {
+		res.status(200).json({ message: "The app is working fine!" });
+	} catch (err) {
+		console.log(err);
+		res.send("error");
+	}
+});
 
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
