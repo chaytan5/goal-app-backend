@@ -14,7 +14,7 @@ connectDB();
 
 let whitelist = [
 	"http://localhost:7000",
-	"https://goal-setter-app-bay.vercel.app/",
+	"https://goal-setter-app-bay.vercel.app",
 ];
 app.use(
 	cors({
